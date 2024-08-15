@@ -4,8 +4,19 @@ import useVisualMode from "hooks/useVisualMode";
 
 const FIRST = "FIRST";
 
+const SECOND = "SECOND";
+
+// Test 1
 test("useVisualMode should initialize with default value", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
   expect(result.current.mode).toBe(FIRST);
 });
+
+// Test 2
+test("useVisualMode should transition to another mode", () => {
+    const { result } = renderHook(() => useVisualMode(FIRST));
+  
+    act(() => result.current.transition(SECOND));
+    expect(result.current.mode).toBe(SECOND);
+  });
