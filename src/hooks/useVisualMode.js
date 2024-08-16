@@ -5,18 +5,26 @@ export default function useVisualMode(initial) {
     const [history, setHistory] = useState([initial]); // we are initializing our history as an array with the first mode that gets passed to useVisualMode
 
 
-    function transition(newMode){
-      setMode(newMode);
-      setHistory(prev => [...prev, newMode]); // grab the previous version of the state
+    function transition(mode, replace = false) {
+        if (replace) {
+            // Replace the current mode in the history array
+            setHistory(prev => [...prev.slice(0, -1), mode]);
+        } else {
+            // Add the new mode to the history array
+            setHistory(prev => [...prev, mode]);
+        }
+        setMode(mode);
     }
 
-    function back() { 
-        setHistory(prev => [...prev.slice(0, prev.length - 1)]); 
-       
-        // Since setState is an asynchronous function, our setMode isn’t waiting for setHistory to finish. Therefore the history array that setMode is grabbing is an unmodified one.
-        // setMode(history[history.length - 1]); 
-     }
 
-     // remove the last item from the stack, and then setMode with the last item in the array
-   return { mode: history[history.length -1], transition, back };
-  }
+    function back() {
+        // Ensure that the back function won't allow us to go past the initial mode
+        // If the length is greater than 1, you can safely go back
+        if (history.length > 1) {
+            const newHistory = history.slice(0, -1);
+            setHistory(newHistory);
+            setMode(newHistory[newHistory.length - 1]);
+        }
+    }
+    return { mode, transition, back };
+}
