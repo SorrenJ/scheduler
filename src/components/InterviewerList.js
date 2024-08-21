@@ -19,12 +19,7 @@ function InterviewerList(props) {
     );
   });
 
-  InterviewerList.propTypes = {
 
-    // Add .toString() function to the end of the variable name to easily turn the array into a string
-    interviewers: PropTypes.array.isRequired.toString()
-  };
-  
 
   return (
     <section className="interviewers">
@@ -33,5 +28,25 @@ function InterviewerList(props) {
     </section>
   );
 }
+
+InterviewerList.propTypes = {
+  interviewers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,  // Ensure `name` is defined here
+      avatar: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  value: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+
+
+
+
+
+  // Add .toString() function to the end of the variable name to easily turn the array into a string
+  // interviewers: PropTypes.array.isRequired.toString()
+
+};
 
 export default InterviewerList;

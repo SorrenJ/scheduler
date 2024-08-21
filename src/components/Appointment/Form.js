@@ -7,6 +7,8 @@ export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
+
+
   function reset() {
     setName("");
     setInterviewer(null);
@@ -30,6 +32,7 @@ export default function Form(props) {
             onChange={event => {
               setName(event.target.value);
             }}
+              data-testid="student-name-input" // When we use getByTestId we need to add the matching data-testid value to the node that we want to find
           />
         </form>
         <InterviewerList
