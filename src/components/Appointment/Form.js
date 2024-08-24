@@ -7,7 +7,8 @@ export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
-
+    // track the error state for "Student name cannot be blank"
+  const [error, setError] = useState("");
 
   function reset() {
     setName("");
@@ -18,6 +19,22 @@ export default function Form(props) {
     reset();
     props.onCancel();
   }
+
+  function validate() {
+    if (name === "") {
+      setError("Student name cannot be blank");
+      return;
+    }
+
+
+    if (interviewer === null) {
+    setError("Please select an interviewer");
+    return;
+  }
+
+    props.onSave(name, interviewer);
+  }
+
 
   return (
     <main className="appointment__card appointment__card--create">
@@ -34,6 +51,8 @@ export default function Form(props) {
             }}
               data-testid="student-name-input" // When we use getByTestId we need to add the matching data-testid value to the node that we want to find
           />
+
+<section className="appointment__validation">{error}</section>
         </form>
         <InterviewerList
           interviewers={props.interviewers}
@@ -47,7 +66,7 @@ export default function Form(props) {
             Cancel
           </Button>
           {/* onClick passes in the needed parameters to the onSave prop */}
-          <Button confirm onClick={() => props.onSave(name, interviewer)} >
+          <Button confirm onClick={validate} >
             Save
           </Button>
         </section>
